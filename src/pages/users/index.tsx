@@ -1,4 +1,5 @@
-import { Box, Button, Checkbox, Flex, Heading, Icon, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Heading, Icon, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react";
+import Link from "next/link";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 
 //components
@@ -7,128 +8,137 @@ import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 
 export default function UserList() {
+  const isLargeScreen = useBreakpointValue({
+    base: false,
+    lg: true
+  })
+
+
   return (
     <Box>
       <Header />
-      <Flex w='100%' my='6' maxWidth={1480} mx='auto' px='6' >
+      <Flex w='100%' my='6' maxWidth={1480} mx='auto' px={['4', '4', '6']} >
         <Sidebar />
 
         <Box flex='1' borderRadius={8} bg='gray.800' p='8'>
           <Flex mb='8' justify='space-between' align='center'>
             <Heading size='lg' fontWeight='normal' >Usuários</Heading>
 
-            <Button as='a' size='sm' fontSize='sm' colorScheme='pink' leftIcon={<Icon as={RiAddLine} fontSize='20' />} >
-              Novo usuário
-            </Button>
+            <Link href={'/users/create'} passHref >
+              <Button as='a' size='sm' fontSize='sm' colorScheme='pink' leftIcon={<Icon as={RiAddLine} fontSize='20' />} >
+                Novo usuário
+              </Button>
+            </Link>
+
           </Flex>
 
           <Table colorScheme="whiteAlpha"  >
             <Thead>
               <Tr>
-                <Th px='6' color='gray.300' width='8' >
+                <Th px={['4', '4', '6']} color='gray.300' width='8' >
                   <Checkbox colorScheme="pink" />
                 </Th>
                 <Th>Usuário</Th>
-                <Th>Data de Cadastro</Th>
-                <Th>Atividades Recentes</Th>
-                <Th width='8' ></Th>
+                {isLargeScreen && <Th>Data de Cadastro</Th>}
+                {isLargeScreen && <Th>Atividades Recentes</Th>}
+                {isLargeScreen && <Th width='8' ></Th>}
               </Tr>
             </Thead>
             <Tbody>
               <Tr>
-                <Td px='6'><Checkbox colorScheme="pink" /></Td>
+                <Td px={['4', '4', '6']}><Checkbox colorScheme="pink" /></Td>
                 <Td>
                   <Box>
                     <Text fontWeight="bold" >Rafael Lima</Text>
                     <Text fontSize='sm' color='gray.300' >rafaa99@gmail.com</Text>
                   </Box>
                 </Td>
-                <Td>14 de Abril, 2022</Td>
+                {isLargeScreen && <Td>14 de Abril, 2022</Td>}
                 <Td>
-                  <Text fontSize='md' color='gray.500' >Comentário:</Text>
-                  <Text fontSize='sm' color='gray.300' >Conheci o conteúdo recentemente e estou adorando...</Text>
+                  {isLargeScreen && <Text fontSize='md' color='gray.500' >Comentário</Text>}
+                  {isLargeScreen && <Text fontSize='sm' color='gray.300' >Conheci o conteúdo recentemente e estou adorando...</Text>}
                 </Td>
-                <Td>
+                {isLargeScreen && <Td>
                   <Button as='a' size='sm' fontSize='sm' colorScheme='purple' leftIcon={<Icon as={RiPencilLine} fontSize='16' />} >
                     Editar
                   </Button>
-                </Td>
+                </Td>}
               </Tr>
               <Tr>
-                <Td px='6'><Checkbox colorScheme="pink" /></Td>
+                <Td px={['4', '4', '6']}><Checkbox colorScheme="pink" /></Td>
                 <Td>
                   <Box>
                     <Text fontWeight="bold" >Rafael Lima</Text>
                     <Text fontSize='sm' color='gray.300' >rafaa99@gmail.com</Text>
                   </Box>
                 </Td>
-                <Td>14 de Abril, 2022</Td>
+                {isLargeScreen && <Td>14 de Abril, 2022</Td>}
                 <Td>
-                  <Text fontSize='md' color='gray.500' >Comentário:</Text>
-                  <Text fontSize='sm' color='gray.300' >Conheci o conteúdo recentemente e estou adorando...</Text>
+                  {isLargeScreen && <Text fontSize='md' color='gray.500' >Comentário</Text>}
+                  {isLargeScreen && <Text fontSize='sm' color='gray.300' >Conheci o conteúdo recentemente e estou adorando...</Text>}
                 </Td>
-                <Td>
+                {isLargeScreen && <Td>
                   <Button as='a' size='sm' fontSize='sm' colorScheme='purple' leftIcon={<Icon as={RiPencilLine} fontSize='16' />} >
                     Editar
                   </Button>
-                </Td>
+                </Td>}
               </Tr>
               <Tr>
-                <Td px='6'><Checkbox colorScheme="pink" /></Td>
+                <Td px={['4', '4', '6']}><Checkbox colorScheme="pink" /></Td>
                 <Td>
                   <Box>
                     <Text fontWeight="bold" >Rafael Lima</Text>
                     <Text fontSize='sm' color='gray.300' >rafaa99@gmail.com</Text>
                   </Box>
                 </Td>
-                <Td>14 de Abril, 2022</Td>
+                {isLargeScreen && <Td>14 de Abril, 2022</Td>}
                 <Td>
-                  <Text fontSize='md' color='gray.500' >Comentário:</Text>
-                  <Text fontSize='sm' color='gray.300' >Conheci o conteúdo recentemente e estou adorando...</Text>
+                  {isLargeScreen && <Text fontSize='md' color='gray.500' >Comentário</Text>}
+                  {isLargeScreen && <Text fontSize='sm' color='gray.300' >Conheci o conteúdo recentemente e estou adorando...</Text>}
                 </Td>
-                <Td>
+                {isLargeScreen && <Td>
                   <Button as='a' size='sm' fontSize='sm' colorScheme='purple' leftIcon={<Icon as={RiPencilLine} fontSize='16' />} >
                     Editar
                   </Button>
-                </Td>
+                </Td>}
               </Tr>
               <Tr>
-                <Td px='6'><Checkbox colorScheme="pink" /></Td>
+                <Td px={['4', '4', '6']}><Checkbox colorScheme="pink" /></Td>
                 <Td>
                   <Box>
                     <Text fontWeight="bold" >Rafael Lima</Text>
                     <Text fontSize='sm' color='gray.300' >rafaa99@gmail.com</Text>
                   </Box>
                 </Td>
-                <Td>14 de Abril, 2022</Td>
+                {isLargeScreen && <Td>14 de Abril, 2022</Td>}
                 <Td>
-                  <Text fontSize='md' color='gray.500' >Comentário:</Text>
-                  <Text fontSize='sm' color='gray.300' >Conheci o conteúdo recentemente e estou adorando...</Text>
+                  {isLargeScreen && <Text fontSize='md' color='gray.500' >Comentário</Text>}
+                  {isLargeScreen && <Text fontSize='sm' color='gray.300' >Conheci o conteúdo recentemente e estou adorando...</Text>}
                 </Td>
-                <Td>
+                {isLargeScreen && <Td>
                   <Button as='a' size='sm' fontSize='sm' colorScheme='purple' leftIcon={<Icon as={RiPencilLine} fontSize='16' />} >
                     Editar
                   </Button>
-                </Td>
+                </Td>}
               </Tr>
               <Tr>
-                <Td px='6'><Checkbox colorScheme="pink" /></Td>
+                <Td px={['4', '4', '6']}><Checkbox colorScheme="pink" /></Td>
                 <Td>
                   <Box>
                     <Text fontWeight="bold" >Rafael Lima</Text>
                     <Text fontSize='sm' color='gray.300' >rafaa99@gmail.com</Text>
                   </Box>
                 </Td>
-                <Td>14 de Abril, 2022</Td>
+                {isLargeScreen && <Td>14 de Abril, 2022</Td>}
                 <Td>
-                  <Text fontSize='md' color='gray.500' >Comentário:</Text>
-                  <Text fontSize='sm' color='gray.300' >Conheci o conteúdo recentemente e estou adorando...</Text>
+                  {isLargeScreen && <Text fontSize='md' color='gray.500' >Comentário</Text>}
+                  {isLargeScreen && <Text fontSize='sm' color='gray.300' >Conheci o conteúdo recentemente e estou adorando...</Text>}
                 </Td>
-                <Td>
+                {isLargeScreen && <Td>
                   <Button as='a' size='sm' fontSize='sm' colorScheme='purple' leftIcon={<Icon as={RiPencilLine} fontSize='16' />} >
                     Editar
                   </Button>
-                </Td>
+                </Td>}
               </Tr>
             </Tbody>
           </Table>
