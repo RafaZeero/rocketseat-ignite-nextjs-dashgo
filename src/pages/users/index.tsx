@@ -1,40 +1,21 @@
-import { Box, Button, Checkbox, Flex, Heading, Icon, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react";
-import Link from "next/link";
+import { Box, Button, Checkbox, Flex, Heading, Icon, Link, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
-import { useQuery } from 'react-query'
 
 //components
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 import { api } from "../../services/api";
-import { User } from "../../services/mirage";
+import { useUsers } from "../../services/hooks/useUsers";
+import { User } from "../../services/hooks/useUsers";
+import { queryClient } from "../../services/queryClient";
 
-type UserProps = User & {
-  id: string
-  createdAt: string
-}
 
 export default function UserList() {
-  const { data, isLoading, isFetching, error, refetch } = useQuery('users', async () => {
-    const { data } = await api.get('users')
-    const users = data.users.map((user: UserProps) => {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric'
-        })
-      }
-    })
-
-    return users
-  }, {
-    staleTime: 5 * 1000 // 5 segundos
-  })
+  const [currentPage, setCurrentPage] = useState(1)
+  const { data, isLoading, isFetching, error, refetch } = useUsers(currentPage)
 
 
   const isLargeScreen = useBreakpointValue({
@@ -42,6 +23,14 @@ export default function UserList() {
     lg: true
   })
 
+  async function handlePrefetchUser(userId: string) {
+    await queryClient.prefetchQuery(['user', userId], async () => {
+      const response = await api.get(`users/${userId}`)
+      return response.data
+    }, {
+      staleTime: 60 * 10 * 1000 // 10 minutes
+    })
+  }
 
   return (
     <Box>
@@ -59,11 +48,11 @@ export default function UserList() {
             <Button ml='auto' mr='4' onClick={() => refetch()} size='sm' fontSize='sm' colorScheme='purple' >
               Refresh
             </Button>
-            <Link href={'/users/create'} passHref >
+            <NextLink href={'/users/create'} passHref >
               <Button as='a' size='sm' fontSize='sm' colorScheme='pink' leftIcon={<Icon as={RiAddLine} fontSize='20' />} >
                 Novo usuário
               </Button>
-            </Link>
+            </NextLink>
 
           </Flex>
 
@@ -90,13 +79,15 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data.map((user: UserProps) => {
+                  {data?.users.map((user: User) => {
                     return (
                       <Tr key={user.id}>
                         <Td px={['4', '4', '6']}><Checkbox colorScheme="pink" /></Td>
                         <Td>
                           <Box>
-                            <Text fontWeight="bold" >{user.name}</Text>
+                            <Link color='purple.400' onMouseEnter={() => handlePrefetchUser(user.id)}>
+                              <Text fontWeight="bold" >{user.name}</Text>
+                            </Link>
                             <Text fontSize='sm' color='gray.300' >{user.email}</Text>
                           </Box>
                         </Td>
@@ -117,7 +108,11 @@ export default function UserList() {
                 </Tbody>
               </Table>
 
-              <Pagination />
+              <Pagination
+                totalCountOfRegister={data!.totalCount}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+              />
             </>
           )}
         </Box>
